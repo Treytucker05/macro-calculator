@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Macro Calculator</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .form-section, .output-section {
+      background: #222;
+      padding: 20px;
+      border: 2px dashed #FF0000;
+      border-radius: 10px;
+      margin: 20px 0;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #FF0000;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #FF0000;
+    }
+
+    h3 {
+      color: #FF0000;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      position: relative;
+      color: white;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #333;
+      color: #fff;
+      border: 2px solid #FF0000;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    select option {
+      background-color: #333;
+      color: white;
+    }
+
+    details {
+      margin-bottom: 10px;
+      border: 1px solid #FF0000;
+      border-radius: 8px;
+      padding: 8px;
+    }
+
+    details summary {
+      cursor: pointer;
+      outline: none;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: white;
+    }
+
+    details[open] {
+      background-color: #333;
+    }
+
+    .note {
+      font-size: 0.85rem;
+      color: #ccc;
+      margin-top: 0.25rem;
+    }
+
+    .output {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .result-box {
+      border: 1px solid #555;
+      padding: 1rem;
+      border-radius: 8px;
+      min-height: 160px;
+      background-color: #333;
+    }
+
+    .macro-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #555;
+    }
+
+    .macro-label {
+      color: #FF0000;
+      font-weight: bold;
+    }
+
+    .macro-value {
+      color: white;
+    }
+
+    /* Three-tier color system */
+    .tip {
+      background-color: #2e7d32;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+
+    .caution {
+      background-color: #f57c00;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+
+    .warn {
+      background-color: #d32f2f;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+
+    /* Color legend */
+    .color-legend {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background-color: #2a2a2a;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .color-legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .color-legend-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .color-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .color-dot.green {
+      background-color: #2e7d32;
+    }
+
+    .color-dot.yellow {
+      background-color: #f57c00;
+    }
+
+    .color-dot.red {
+      background-color: #d32f2f;
+    }
+
+    /* Info section styling */
+    .info-section {
+      margin-top: -5px;
+      margin-bottom: 15px;
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 5px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .info-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      cursor: pointer;
+      user-select: none;
+      background-color: #2a2a2a;
+      transition: background-color 0.2s;
+    }
+
+    .info-toggle:hover {
+      background-color: #353535;
+    }
+
+    .info-toggle-text {
+      font-size: 0.9rem;
+      color: #FF0000;
+      font-weight: 500;
+    }
+
+    .info-toggle-icon {
+      color: #FF0000;
+      font-size: 0.9rem;
+      transition: transform 0.3s ease;
+    }
+
+    .info-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background-color: #1a1a1a;
+    }
+
+    .info-content.expanded {
+      max-height: 500px;
+    }
+
+    .info-content-inner {
+      padding: 12px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #ddd;
+    }
+
+    .info-content-inner strong {
+      color: #FF0000;
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+
+    .info-content-inner strong:first-child {
+      margin-top: 0;
+    }
+
+    .info-toggle.expanded .info-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .lb-green { color: #2e8b57; }
+    .lb-amber { color: #d68a00; }
+    .lb-red { color: #c00; }
+
+    /* Additional responsive improvements */
+    @media (max-width: 768px) {
+      .form-section, .output-section {
+        margin: 10px;
+        padding: 15px;
+      }
+      
+      body {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-section">
+    <h1>Macro Calculator</h1>
+    <form id="macroForm" autocomplete="off">
+      <label>Weight (lb)
+        <input type="number" id="weight" min="90" max="350" placeholder="e.g. 180">
+      </label>
+
+      <label>Gender
+        <select id="gender">
+          <option value="male" selected>Male</option>
+          <option value="female">Female</option>
+        </select>
+      </label>
+
+      <label>Training Day Intensity
+        <select id="intensity">
+          <option value="Non Training">Non‑Training Day</option>
+          <option value="Light">Light Day</option>
+          <option value="Moderate" selected>Moderate Day</option>
+          <option value="Hard">Hard Day</option>
+        </select>
+      </label>
+      <div class="info-section">
+        <div class="info-toggle" onclick="toggleInfo(this)">
+          <span class="info-toggle-text">ⓘ Information about Training Intensities</span>
+          <span class="info-toggle-icon">▼</span>
+        </div>
+        <div class="info-content">
+          <div class="info-content-inner">
+            <strong>Non-Training Day:</strong>
+            A day on which you do not do any formal exercise.
+            
+            <strong>Light Day:</strong>
+            Light day training describes most workouts of up to an hour long. You will finish with a bit of sweat on your shirt. Psychologically fairly easy, even if the lifts are heavy, because the workload is so small. Calories burned should be 300 or less. Includes mobility sessions, individual metcons, small body part workouts, or peaking sessions. Should include no more than 10 total working sets.
+            
+            <strong>Moderate Day:</strong>
+            Should typically last 1 to 2 hours with minimal down time. Your clothes will be roughly half wet from sweating. Psychologically more difficult than a light day with average caloric burn around 500 calories. Includes metcon followed by lifting, lifting sessions with 10-25 working sets, and large body part training.
+            
+            <strong>Hard Day:</strong>
+            Will typically take more than 2 hours. Will leave your clothes soaked in sweat. Calories burned around 1000. Psychologically challenging and can include workouts with more than 25 working sets, highly voluminous workouts, and workouts that combine strength, weightlifting, metcons, and volume work.
+          </div>
+        </div>
+      </div>
+
+      <label>Goal preset
+        <select id="goal">
+          <option value="cut">Cut (‑250 kcal)</option>
+          <option value="maintain" selected>Maintenance</option>
+          <option value="bulk">Bulk (+250 kcal)</option>
+        </select>
+      </label>
+      <div class="info-section">
+        <div class="info-toggle" onclick="toggleInfo(this)">
+          <span class="info-toggle-text">ⓘ Information about Goal Presets</span>
+          <span class="info-toggle-icon">▼</span>
+        </div>
+        <div class="info-content">
+          <div class="info-content-inner">
+            <strong>Cut:</strong>
+            Avoid untracked snacks for strict macro adherence. Creates a 250 calorie deficit for fat loss.
+            
+            <strong>Maintenance:</strong>
+            Maintain current weight and body composition with balanced calorie intake.
+            
+            <strong>Bulk:</strong>
+            Strategic calorie‑dense add‑ons okay if progress stalls. Creates a 250 calorie surplus for muscle gain.
+          </div>
+        </div>
+      </div>
+
+      <label>Meals per day
+        <select id="meals">
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </label>
+
+      <details>
+        <summary>Advanced Settings (optional)</summary>
+        <label>Manual calorie override (kcal)
+          <input type="number" id="calOverride" placeholder="leave blank to auto‑calc">
+        </label>
+        <label>Target weight change (lb/week)
+          <select id="lbChange">
+            <option value="" selected>--- use goal preset ---</option>
+            <option value="-2" class="lb-red">‑2.0</option>
+            <option value="-1.5" class="lb-red">‑1.5</option>
+            <option value="-1" class="lb-amber">‑1.0</option>
+            <option value="-0.5" class="lb-green">‑0.5</option>
+            <option value="0" class="lb-green">0 (maintain)</option>
+            <option value="0.5" class="lb-green">+0.5</option>
+            <option value="1" class="lb-amber">+1.0</option>
+            <option value="1.5" class="lb-red">+1.5</option>
+            <option value="2" class="lb-red">+2.0</option>
+          </select>
+        </label>
+
+        <label>Protein multiplier (g/lb)
+          <select id="protMult">
+            <option value="0.8">0.8</option>
+            <option value="1" selected>1.0</option>
+            <option value="1.2">1.2</option>
+            <option value="1.5">1.5</option>
+            <option value="1.8">1.8</option>
+            <option value="2">2.0</option>
+          </select>
+        </label>
+        <label>Fat target (% calories)
+          <select id="fatPercent">
+            <option value="" selected>Book default</option>
+            <option value="20">20 %</option>
+            <option value="25">25 %</option>
+            <option value="30">30 %</option>
+            <option value="35">35 %</option>
+            <option value="40">40 %</option>
+            <option value="50">50 %</option>
+          </select>
+        </label>
+      </details>
+
+      <p class="note">Results update automatically. Priority → Calorie override → lbs/week → goal preset. Select 'Book default' for fat target to follow The Renaissance Diet 2.0 method.</p>
+    </form>
+  </div>
+
+  <div class="output-section">
+    <h2>Results</h2>
+    <div id="output" class="output">
+      <div class="result-box" id="resultBox">Enter your weight to see macro targets.</div>
+      <div id="messagesContainer"></div>
+      <div class="color-legend">
+        <div class="color-legend-item">
+          <div class="color-dot green"></div>
+          <span><strong>Green:</strong> Good to go — healthy guidelines to follow</span>
+        </div>
+        <div class="color-legend-item">
+          <div class="color-dot yellow"></div>
+          <span><strong>Yellow:</strong> Caution — suboptimal but manageable with awareness</span>
+        </div>
+        <div class="color-legend-item">
+          <div class="color-dot red"></div>
+          <span><strong>Red:</strong> Warning — may impact performance or health</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// Toggle info sections
+function toggleInfo(element) {
+  const infoSection = element.parentElement;
+  const content = infoSection.querySelector('.info-content');
+  const isExpanded = content.classList.contains('expanded');
+  
+  if (isExpanded) {
+    content.classList.remove('expanded');
+    element.classList.remove('expanded');
+  } else {
+    content.classList.add('expanded');
+    element.classList.add('expanded');
+  }
+}
+
+// --- Data tables ---
+const calorieTable = {
+  "Non Training": [{ min: 100, max: 115, cal: 1300 }, { min: 116, max: 130, cal: 1500 }, { min: 131, max: 145, cal: 1700 }, { min: 146, max: 160, cal: 1800 }, { min: 161, max: 175, cal: 1900 }, { min: 176, max: 190, cal: 1950 }, { min: 191, max: 210, cal: 2000 }, { min: 211, max: 230, cal: 2150 }, { min: 231, max: 250, cal: 2300 }, { min: 251, max: 275, cal: 2500 }, { min: 276, max: 300, cal: 2700 }],
+  "Light": [{ min: 100, max: 115, cal: 1500 }, { min: 116, max: 130, cal: 1700 }, { min: 131, max: 145, cal: 1900 }, { min: 146, max: 160, cal: 2000 }, { min: 161, max: 175, cal: 2100 }, { min: 176, max: 190, cal: 2200 }, { min: 191, max: 210, cal: 2300 }, { min: 211, max: 230, cal: 2500 }, { min: 231, max: 250, cal: 2700 }, { min: 251, max: 275, cal: 2900 }, { min: 276, max: 300, cal: 3100 }],
+  "Moderate": [{ min: 100, max: 115, cal: 1700 }, { min: 116, max: 130, cal: 1900 }, { min: 131, max: 145, cal: 2100 }, { min: 146, max: 160, cal: 2250 }, { min: 161, max: 175, cal: 2400 }, { min: 176, max: 190, cal: 2500 }, { min: 191, max: 210, cal: 2600 }, { min: 211, max: 230, cal: 2800 }, { min: 231, max: 250, cal: 3000 }, { min: 251, max: 275, cal: 3250 }, { min: 276, max: 300, cal: 3500 }],
+  "Hard": [{ min: 100, max: 115, cal: 1900 }, { min: 116, max: 130, cal: 2100 }, { min: 131, max: 145, cal: 2300 }, { min: 146, max: 160, cal: 2450 }, { min: 161, max: 175, cal: 2600 }, { min: 176, max: 190, cal: 2750 }, { min: 191, max: 210, cal: 2900 }, { min: 211, max: 230, cal: 3100 }, { min: 231, max: 250, cal: 3300 }, { min: 251, max: 275, cal: 3600 }, { min: 276, max: 300, cal: 3900 }]
+};
+
+const carbMin = { "Non Training": 0.3, "Light": 0.5, "Moderate": 1.0, "Hard": 1.5 };
+const carbRecommended = { "Non Training": 0.5, "Light": 1.0, "Moderate": 1.5, "Hard": 2.0 };
+
+function colorLB(val) {
+  const el = document.getElementById('lbChange');
+  el.classList.remove('lb-green', 'lb-amber', 'lb-red');
+  if (val === '') return;
+  const v = Math.abs(parseFloat(val));
+  el.classList.add(v <= 0.5 ? 'lb-green' : v <= 1 ? 'lb-amber' : 'lb-red');
+}
+
+function calcMacros() {
+  const w = parseFloat(weight.value);
+  if (!w) { resultBox.textContent = 'Enter your weight to see macro targets.'; return; }
+
+  // inputs
+  const gender = genderSelect.value;
+  const intensity = intensitySelect.value;
+  const goal = goalSelect.value;
+  const meals = parseInt(mealsSelect.value);
+  const override = parseFloat(calOverride.value);
+  const lbVal = lbChange.value;
+  const lb = parseFloat(lbVal);
+  const protMult = parseFloat(protMultSel.value);
+  const fatPct = fatPercentSel.value ? parseFloat(fatPercentSel.value) : null;
+
+  colorLB(lbVal);
+
+  // calories
+  let cal;
+  if (override > 0) { cal = override; } else {
+    const row = calorieTable[intensity].find(r => w >= r.min && w <= r.max);
+    if (!row) { resultBox.textContent = 'Weight out of supported range'; return; }
+    cal = row.cal;
+    if (gender === 'female') cal *= 0.95; // gender adjustment
+    if (!isNaN(lb)) cal += lb * 500;
+    else if (goal === 'cut') cal -= 250;
+    else if (goal === 'bulk') cal += 250;
+  }
+
+  // macros
+  const proteinG = +(w * protMult).toFixed(1);
+  const proteinCal = proteinG * 4;
+  const minFatG = 0.3 * w;
+  let carbG, fatG;
+
+  if (fatPct) {
+    fatG = (cal * fatPct / 100) / 9;
+    fatG = Math.max(fatG, minFatG);
+    const fatCal = fatG * 9;
+    let carbCal = cal - proteinCal - fatCal;
+    carbG = carbCal / 4;
+    if (carbG < 0) {
+      carbG = 0;
+      fatCal = cal - proteinCal;
+      fatG = fatCal / 9;
+    }
+  } else {
+    const carbFactor = carbRecommended[intensity];
+    carbG = w * carbFactor;
+    let carbCal = carbG * 4;
+    let remainingCal = cal - proteinCal - carbCal;
+    fatG = remainingCal / 9;
+    if (fatG < minFatG) {
+      fatG = minFatG;
+      const fatCal = fatG * 9;
+      carbCal = cal - proteinCal - fatCal;
+      if (carbCal < 0) {
+        carbCal = 0;
+        fatCal = cal - proteinCal;
+        fatG = fatCal / 9;
+      } else {
+        carbG = carbCal / 4;
+      }
+    } else if (fatG < 0) {
+      fatG = 0;
+      carbCal = cal - proteinCal;
+      carbG = carbCal / 4;
+    }
+  }
+
+  // ensure non-negative
+  if (carbG < 0) carbG = 0;
+  if (fatG < 0) fatG = 0;
+
+  // Clear messages container
+  messagesContainer.innerHTML = '';
+  
+  // Collect all messages with their appropriate color classes
+  const messages = [];
+
+  // Red warnings (highest priority)
+  const minCarb = w * carbMin[intensity];
+  if (carbG < minCarb) {
+    messages.push({ text: `Carbs below ${intensity} minimum (${minCarb.toFixed(1)} g).`, class: 'warn' });
+  }
+  if (!isNaN(lb) && Math.abs(lb) > 1.5) {
+    messages.push({ text: 'Aggressive phase: keep stress low & sleep ≥7 h.', class: 'warn' });
+  }
+  if (intensity === 'Hard' && carbG < w * 0.5) {
+    messages.push({ text: 'Very low carbs on hard training days may impair performance. Consider at least 1.5 g/lb.', class: 'warn' });
+  }
+
+  // Yellow cautions
+  if (protMult > 1.5) {
+    messages.push({ text: 'Protein >1.5 g/lb – advanced intake.', class: 'caution' });
+  }
+  if (fatG > 0 && (fatG * 9 / cal >= 0.4)) {
+    messages.push({ text: 'High fat (>40 % kcal) — favour unsaturated sources.', class: 'caution' });
+  }
+  const ppm = proteinG / meals;
+  if (ppm < 25 || ppm > 50) {
+    messages.push({ text: 'Per‑meal protein target ≈25‑50 g.', class: 'caution' });
+  }
+  if (meals < 4 || meals > 6) {
+    messages.push({ text: 'Optimal adherence: aim for 4–6 meals.', class: 'caution' });
+  }
+
+  // Green tips (always shown)
+  messages.push({ text: 'Whole-food rule: ≥80 % single-ingredient foods & aim for at least 5 servings of fruits and vegetables per day.', class: 'tip' });
+  
+  // Hydration tip
+  const weightKg = w / 2.2;
+  const baseWater = 30 * weightKg;
+  // Additional water based on training intensity
+  const trainingWater = {
+    'Non Training': 0,
+    'Light': 250,
+    'Moderate': 500,
+    'Hard': 1000
+  }[intensity];
+  
+  if (trainingWater > 0) {
+    messages.push({ text: `Hydration: Aim for ${(baseWater / 1000).toFixed(1)}–${((baseWater + trainingWater) / 1000).toFixed(1)} L of water per day.`, class: 'tip' });
+  } else {
+    // Non-training day: just show single value
+    messages.push({ text: `Hydration: Aim for ${(baseWater / 1000).toFixed(1)} L of water per day.`, class: 'tip' });
+  }
+
+  // render macros
+  const per = x => +(x / meals).toFixed(1);
+  resultBox.innerHTML = `
+    <h3>Daily Totals</h3>
+    <div class="macro-item"><span class="macro-label">Calories:</span><span class="macro-value">${Math.round(cal)} kcal</span></div>
+    <div class="macro-item"><span class="macro-label">Protein:</span><span class="macro-value">${proteinG} g</span></div>
+    <div class="macro-item"><span class="macro-label">Fats:</span><span class="macro-value">${fatG.toFixed(1)} g</span></div>
+    <div class="macro-item"><span class="macro-label">Carbs:</span><span class="macro-value">${carbG.toFixed(1)} g</span></div>
+    <h3>Per Meal (${meals} meals)</h3>
+    <div class="macro-item"><span class="macro-label">Protein:</span><span class="macro-value">${per(proteinG)} g</span></div>
+    <div class="macro-item"><span class="macro-label">Fats:</span><span class="macro-value">${per(fatG)} g</span></div>
+    <div class="macro-item"><span class="macro-label">Carbs:</span><span class="macro-value">${per(carbG)} g</span></div>
+  `;
+
+  // Render messages
+  messages.forEach(msg => {
+    const div = document.createElement('div');
+    div.className = msg.class;
+    div.textContent = msg.text;
+    messagesContainer.appendChild(div);
+  });
+}
+
+// element refs
+const weight = document.getElementById('weight');
+const genderSelect = document.getElementById('gender');
+const intensitySelect = document.getElementById('intensity');
+const goalSelect = document.getElementById('goal');
+const mealsSelect = document.getElementById('meals');
+const calOverride = document.getElementById('calOverride');
+const lbChange = document.getElementById('lbChange');
+const protMultSel = document.getElementById('protMult');
+const fatPercentSel = document.getElementById('fatPercent');
+const resultBox = document.getElementById('resultBox');
+const messagesContainer = document.getElementById('messagesContainer');
+
+// listeners
+macroForm.addEventListener('input', calcMacros);
+macroForm.addEventListener('change', calcMacros);
+window.addEventListener('DOMContentLoaded', calcMacros);
+</script>
+</body>
+</html>
