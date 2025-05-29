@@ -21,3 +21,11 @@
       "prompt": "Create js/adaptiveEngine.js as an ES module that exports one function:\\n\\n/**\\n * getDailyAdjustedMacros\\n * @param {number[]} weeklyWeights  – array of last 7 body-weights (lbs)\\n * @param {number} targetChange     – desired lbs per week (neg = lose, pos = gain)\\n * @param {{p:number,c:number,f:number}} macros – current daily macros (grams)\\n * @returns {{p:number,c:number,f:number, kcalAdj:number}}  new macros & kcal delta\\n */\\nimport { weeklyAverage } from './weeklyAverage.js';\\nimport { calorieCorrection } from './calorieCorrection.js';\\nexport function getDailyAdjustedMacros(weeklyWeights, targetChange, macros){\\n  const actualChange = weeklyWeights[0] - weeklyWeights[6];\\n  const kcalAdj = calorieCorrection(targetChange, actualChange);\\n  // adjust carbs first (4 kcal/g), then fats (9 kcal/g)\\n  let remain = kcalAdj;\\n  const newMacros = { ...macros };\\n  // carbs adjustment (max whole grams)\\n  const carbAdj = Math.trunc(remain / 4);\\n  newMacros.c += carbAdj;\\n  remain -= carbAdj * 4;\\n  // fats adjustment for leftover kcal\\n  const fatAdj = Math.trunc(remain / 9);\\n  newMacros.f += fatAdj;\\n  return { ...newMacros, kcalAdj };\\n}",
       "tests": "node -e \"import('./js/adaptiveEngine.js').then(m=>{const w=[200,200,200,199.8,199.6,199.5,199.5];const cur={p:230,c:545,f:120};const res=m.getDailyAdjustedMacros(w,-1,cur);if(!('kcalAdj' in res))process.exit(1);});\""
     }
+
+,
+    {
+      "name": "noop",
+      "file": "noop.txt",
+      "prompt": "Create noop.txt that just contains the word ok",
+      "tests": "echo ok"
+    }
