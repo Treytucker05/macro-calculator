@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renaissance Diet 2.0 - Adaptive Macro Calculator</title>
+    <title>Macro Calculator - Advanced Nutrition Planning</title>
     <style>
         * {
             box-sizing: border-box;
@@ -131,7 +131,7 @@
             border-left: 5px solid #667eea;
         }
 
-        .neat-highlight {
+        .activity-highlight {
             background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
             padding: 20px;
             border-radius: 10px;
@@ -139,17 +139,24 @@
             margin: 20px 0;
         }
 
-        .neat-highlight h4 {
+        .activity-highlight h4 {
             color: #2980b9;
             margin-bottom: 15px;
             font-size: 1.2em;
         }
 
-        .step-workout-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 15px;
+        .training-section {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ff9800;
+            margin: 20px 0;
+        }
+
+        .training-section h4 {
+            color: #f57c00;
+            margin-bottom: 15px;
+            font-size: 1.2em;
         }
 
         .comparison-section {
@@ -232,24 +239,20 @@
             .macro-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .step-workout-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Renaissance Diet 2.0 Calculator</h1>
-            <p>Enhanced with RP-style adaptive algorithms</p>
+            <h1>Macro Calculator</h1>
+            <p>Advanced nutrition planning with adaptive algorithms</p>
         </header>
 
         <!-- Mode Toggle -->
         <div class="mode-toggle">
-            <button id="basicMode" class="mode-btn active" onclick="switchMode('basic')">Basic Calculator</button>
-            <button id="adaptiveMode" class="mode-btn" onclick="switchMode('adaptive')">Adaptive Mode</button>
+            <button id="basicMode" class="mode-btn active" onclick="switchMode('basic')">Macro Calculator</button>
+            <button id="adaptiveMode" class="mode-btn" onclick="switchMode('adaptive')">Progress Tracking</button>
         </div>
 
         <!-- Basic Calculator -->
@@ -312,56 +315,47 @@
                     <option value="muscle-gain">Muscle Gain</option>
                 </select>
             </div>
-            
-            <div class="input-group">
-                <label for="activity">Training Day:</label>
-                <select id="activity">
-                    <option value="non-training">Non-Training Day</option>
-                    <option value="light">Light Day</option>
-                    <option value="moderate">Moderate Day</option>
-                    <option value="hard">Hard Day</option>
+
+            <!-- Daily Life Activity Section -->
+            <div class="input-group activity-highlight">
+                <h4>🚶‍♂️ Daily Life Activity (Every Day)</h4>
+                <p>How active are you in daily life, regardless of formal workouts?</p>
+                
+                <label for="dailySteps">Your Typical Daily Step Count:</label>
+                <select id="dailySteps">
+                    <option value="0.85">0-7,000 steps (Sedentary Lifestyle)</option>
+                    <option value="1.15" selected>7,000-14,000 steps (Active Lifestyle)</option>
+                    <option value="1.3">14,000-21,000 steps (Very Active Lifestyle)</option>
+                    <option value="1.4">21,000+ steps (Extremely Active Lifestyle)</option>
                 </select>
+                <small>This applies to ALL days - training and non-training days</small>
             </div>
 
-            <!-- Enhanced NEAT Assessment - RP Style -->
-            <div class="input-group neat-highlight">
-                <h4>🚶‍♂️ RP-Style Activity Assessment</h4>
-                <p>Match your RP app settings exactly:</p>
+            <!-- Formal Training Section -->
+            <div class="input-group training-section">
+                <h4>🏋️‍♂️ Today's Training Session</h4>
+                <p>Select your formal workout for today (separate from daily steps):</p>
                 
-                <div class="step-workout-grid">
-                    <div>
-                        <label for="dailySteps">Daily Step Count:</label>
-                        <select id="dailySteps">
-                            <option value="0.85">0-7,000 steps (Sedentary)</option>
-                            <option value="1.15" selected>7,000-14,000 steps (Active)</option>
-                            <option value="1.3">14,000-21,000 steps (Very Active)</option>
-                            <option value="1.4">21,000+ steps (Extremely Active)</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label for="workoutIntensity">Workout Intensity:</label>
-                        <select id="workoutIntensity">
-                            <option value="0">Light Workouts</option>
-                            <option value="0.05" selected>Moderate Workouts</option>
-                            <option value="0.1">Hard Workouts</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <small>🎯 Your settings: 7-14k steps + Moderate intensity = Perfect match for RP app!</small>
+                <label for="activity">Training Level:</label>
+                <select id="activity">
+                    <option value="non-training">Non-Training Day (Rest Day)</option>
+                    <option value="light">Light Training Day</option>
+                    <option value="moderate">Moderate Training Day</option>
+                    <option value="hard">Hard Training Day</option>
+                </select>
+                <small>This is your formal workout - separate from daily step count</small>
             </div>
             
-            <button onclick="calculateEnhancedMacros()" class="calculate-btn">Calculate Enhanced Macros</button>
+            <button onclick="calculateEnhancedMacros()" class="calculate-btn">Calculate My Macros</button>
             
             <div id="basicResults" class="results-section" style="display: none;"></div>
         </div>
 
-        <!-- Adaptive Mode -->
+        <!-- Progress Tracking Mode -->
         <div id="adaptiveCalculator" class="calculator-section">
             <div class="progress-tracking">
                 <h2>📊 Weekly Progress Tracking</h2>
-                <p>Use RP's exact adjustment algorithm from Chapter 11</p>
+                <p>Use advanced adjustment algorithms for precise macro modifications</p>
                 
                 <div class="input-group">
                     <label for="targetWeeklyChange">Target Weekly Change (lbs):</label>
@@ -373,23 +367,23 @@
                     <input type="number" id="actualWeeklyChange" placeholder="Enter your actual weekly change" step="0.1">
                 </div>
                 
-                <button onclick="calculateWeeklyAdjustment()" class="calculate-btn">Calculate RP-Style Adjustment</button>
+                <button onclick="calculateWeeklyAdjustment()" class="calculate-btn">Calculate Adjustment</button>
                 
                 <div id="adjustmentResults" class="results-section" style="display: none;"></div>
             </div>
         </div>
 
-        <!-- Comparison with RP App -->
+        <!-- Results Comparison -->
         <div id="comparisonSection" class="comparison-section" style="display: none;">
-            <h2>🎯 Your Enhanced Calculator vs RP App</h2>
+            <h2>🎯 Your Personalized Results</h2>
             <div class="comparison-grid">
                 <div class="macro-result">
-                    <h3 style="color: #667eea;">Your Enhanced Calculator</h3>
+                    <h3 style="color: #667eea;">Your Calculated Macros</h3>
                     <div id="calcMacros"></div>
                 </div>
                 <div class="macro-result">
-                    <h3 style="color: #27ae60;">Your RP App Target</h3>
-                    <div class="rp-macros">
+                    <h3 style="color: #27ae60;">Target Comparison</h3>
+                    <div class="target-macros">
                         <p><strong>Protein:</strong> 230g</p>
                         <p><strong>Fat:</strong> 120g</p>
                         <p><strong>Carbs:</strong> 545g</p>
@@ -397,7 +391,7 @@
                     </div>
                 </div>
                 <div class="macro-result">
-                    <h3 style="color: #e74c3c;">Gap Analysis</h3>
+                    <h3 style="color: #e74c3c;">Accuracy Analysis</h3>
                     <div id="macrosDifference"></div>
                 </div>
             </div>
@@ -451,7 +445,7 @@
     </div>
 
     <script>
-        // Renaissance Diet 2.0 Algorithms Implementation
+        // Advanced Macro Calculator Implementation
         
         // Mode switching
         function switchMode(mode) {
@@ -466,8 +460,8 @@
             document.getElementById(mode + 'Mode').classList.add('active');
         }
 
-        // Enhanced TDEE calculation with RP-style step + workout assessment
-        function calculateEnhancedTDEE(weight, height, age, gender, activityLevel, stepMultiplier, workoutIntensity) {
+        // Enhanced TDEE calculation with step-based assessment
+        function calculateEnhancedTDEE(weight, height, age, gender, activityLevel, stepMultiplier) {
             // BMR calculation (Mifflin-St Jeor equation)
             let bmr;
             if (gender === 'male') {
@@ -476,7 +470,7 @@
                 bmr = (10 * (weight * 0.453592)) + (6.25 * (height * 2.54)) - (5 * age) - 161;
             }
             
-            // Activity multipliers from Chapter 10
+            // Activity multipliers for formal training
             const activityMultipliers = {
                 'non-training': 1.2,
                 'light': 1.4,
@@ -486,9 +480,8 @@
             
             let tdee = bmr * activityMultipliers[activityLevel];
             
-            // Apply RP-style step-based NEAT multiplier
-            const totalMultiplier = parseFloat(stepMultiplier) + parseFloat(workoutIntensity);
-            tdee = tdee * totalMultiplier;
+            // Apply step-based lifestyle multiplier
+            tdee = tdee * parseFloat(stepMultiplier);
             
             return Math.round(tdee);
         }
@@ -503,7 +496,6 @@
             const goal = document.getElementById('goal').value;
             const activity = document.getElementById('activity').value;
             const dailySteps = document.getElementById('dailySteps').value;
-            const workoutIntensity = document.getElementById('workoutIntensity').value;
             
             // Validation
             if (!weight || !feet || inches === null || !age) {
@@ -513,8 +505,8 @@
             
             const height = (feet * 12) + inches; // Convert to total inches
             
-            // Calculate enhanced TDEE with RP-style assessment
-            const tdee = calculateEnhancedTDEE(weight, height, age, gender, activity, dailySteps, workoutIntensity);
+            // Calculate enhanced TDEE
+            const tdee = calculateEnhancedTDEE(weight, height, age, gender, activity, dailySteps);
             
             // Goal adjustments
             let calories = tdee;
@@ -534,7 +526,7 @@
                     proteinMultiplier = 0.8;
             }
             
-            // Calculate macros using RD 2.0 protocols
+            // Calculate macros using advanced protocols
             const protein = Math.round(weight * proteinMultiplier);
             const fat = Math.round(weight * 0.3); // 0.3g/lb minimum
             
@@ -551,31 +543,32 @@
             const carbs = Math.max(Math.round(remainingCalories / 4), minCarbs);
             
             // Display results
-            displayResults(calories, protein, fat, carbs, tdee, feet, inches, dailySteps, workoutIntensity);
+            displayResults(calories, protein, fat, carbs, tdee, feet, inches, dailySteps, activity);
         }
 
-        function displayResults(calories, protein, fat, carbs, tdee, feet, inches, dailySteps, workoutIntensity) {
+        function displayResults(calories, protein, fat, carbs, tdee, feet, inches, dailySteps, activity) {
             const resultsDiv = document.getElementById('basicResults');
             
-            // Step and intensity labels
+            // Step labels
             const stepLabels = {
                 '0.85': '0-7k steps (Sedentary)',
                 '1.15': '7-14k steps (Active)',
                 '1.3': '14-21k steps (Very Active)',
                 '1.4': '21k+ steps (Extremely Active)'
             };
-            
-            const intensityLabels = {
-                '0': 'Light Workouts',
-                '0.05': 'Moderate Workouts',
-                '0.1': 'Hard Workouts'
+
+            // Activity labels
+            const activityLabels = {
+                'non-training': 'Rest Day',
+                'light': 'Light Training',
+                'moderate': 'Moderate Training',
+                'hard': 'Hard Training'
             };
             
-            const totalMultiplier = (parseFloat(dailySteps) + parseFloat(workoutIntensity)).toFixed(2);
-            const baseTDEE = Math.round(tdee / totalMultiplier);
+            const baseTDEE = Math.round(tdee / parseFloat(dailySteps));
             
             resultsDiv.innerHTML = `
-                <h3>🎯 Your RP-Style Enhanced Macros</h3>
+                <h3>🎯 Your Personalized Macros</h3>
                 <div class="macro-grid">
                     <div class="macro-item">
                         <strong>Calories</strong><br><span style="font-size: 1.3em; color: #667eea;">${calories} kcal</span>
@@ -592,15 +585,15 @@
                 </div>
                 
                 <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
-                    <h4>🧮 RP-Style Calculation Breakdown:</h4>
+                    <h4>🧮 Calculation Breakdown:</h4>
                     <p><strong>Your Height:</strong> ${feet}'${inches}"</p>
                     <p><strong>Base TDEE:</strong> ${baseTDEE} kcal</p>
-                    <p><strong>Step Assessment:</strong> ${stepLabels[dailySteps]} (${dailySteps}x)</p>
-                    <p><strong>Workout Intensity:</strong> ${intensityLabels[workoutIntensity]} (+${workoutIntensity}x)</p>
-                    <p><strong>Combined Multiplier:</strong> ${totalMultiplier}x</p>
-                    <p><strong>Enhanced TDEE:</strong> ${tdee} kcal</p>
+                    <p><strong>Daily Activity:</strong> ${stepLabels[dailySteps]}</p>
+                    <p><strong>Training Today:</strong> ${activityLabels[activity]}</p>
+                    <p><strong>Step Multiplier:</strong> ${dailySteps}x</p>
+                    <p><strong>Total TDEE:</strong> ${tdee} kcal</p>
                     <p style="color: #27ae60; font-weight: bold; margin-top: 10px;">
-                        🎉 This matches RP's exact methodology!
+                        ✨ Personalized for your lifestyle and training!
                     </p>
                 </div>
             `;
@@ -614,8 +607,8 @@
             const calcMacros = document.getElementById('calcMacros');
             const macrosDifference = document.getElementById('macrosDifference');
             
-            // Your actual RP app numbers
-            const rpMacros = { protein: 230, fat: 120, carbs: 545, calories: 4180 };
+            // Target comparison numbers
+            const targetMacros = { protein: 230, fat: 120, carbs: 545, calories: 4180 };
             
             calcMacros.innerHTML = `
                 <p><strong>Protein:</strong> ${protein}g</p>
@@ -624,29 +617,29 @@
                 <p><strong>Total:</strong> ${calories} kcal</p>
             `;
             
-            const calorieDiff = calories - rpMacros.calories;
-            const percentageClose = ((calories / rpMacros.calories) * 100).toFixed(1);
+            const calorieDiff = calories - targetMacros.calories;
+            const percentageClose = ((calories / targetMacros.calories) * 100).toFixed(1);
             const accuracyRating = Math.abs(calorieDiff) < 300 ? '🎯 Excellent Match!' : 
                                    Math.abs(calorieDiff) < 600 ? '✅ Very Close!' : 
                                    Math.abs(calorieDiff) < 1000 ? '📊 Much Better!' : '🔧 Still Improving';
             
             macrosDifference.innerHTML = `
                 <p><strong>Calorie Gap:</strong> ${calorieDiff > 0 ? '+' : ''}${calorieDiff} kcal</p>
-                <p><strong>Accuracy:</strong> ${percentageClose}% of RP target</p>
+                <p><strong>Accuracy:</strong> ${percentageClose}% of target</p>
                 <p style="font-size: 1.1em; font-weight: bold; color: ${Math.abs(calorieDiff) < 500 ? '#27ae60' : '#e67e22'};">
                     ${accuracyRating}
                 </p>
                 <hr style="margin: 10px 0;">
                 <p><small>Remaining gap explained by:</small></p>
-                <p><small>• RP's 3+ years of your personal data</small></p>
-                <p><small>• Individual metabolic adaptations</small></p>
-                <p><small>• Seasonal variation patterns</small></p>
+                <p><small>• Individual metabolic variations</small></p>
+                <p><small>• Personal training adaptations</small></p>
+                <p><small>• Long-term data patterns</small></p>
             `;
             
             comparisonSection.style.display = 'block';
         }
 
-        // Chapter 11: Weekly Adjustment Algorithm (RP's exact formula)
+        // Weekly Adjustment Algorithm
         function calculateWeeklyAdjustment() {
             const target = parseFloat(document.getElementById('targetWeeklyChange').value);
             const actual = parseFloat(document.getElementById('actualWeeklyChange').value);
@@ -656,7 +649,7 @@
                 return;
             }
             
-            // Renaissance Diet 2.0 Algorithm from Chapter 11: (target - actual) × 3500 ÷ 7
+            // Advanced Algorithm: (target - actual) × 3500 ÷ 7
             const difference = target - actual;
             const weeklyCalorieAdjustment = difference * 3500;
             const dailyAdjustment = Math.round(weeklyCalorieAdjustment / 7);
@@ -701,13 +694,13 @@
             
             resultsDiv.innerHTML = `
                 <div class="adjustment-result">
-                    <h3>📊 RP-Style Weekly Adjustment</h3>
+                    <h3>📊 Weekly Adjustment Needed</h3>
                     <div class="adjustment-amount">
                         ${adjustmentDirection} by ${adjustmentMagnitude} calories/day
                     </div>
                     
                     <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: left;">
-                        <h4>📐 Chapter 11 Algorithm:</h4>
+                        <h4>📐 Calculation:</h4>
                         <p style="font-family: monospace; background: #f8f9fa; padding: 10px; border-radius: 4px;">
                             (${target} - ${actual}) × 3500 ÷ 7 = ${dailyAdjustment} calories/day
                         </p>
@@ -729,12 +722,11 @@
             resultsDiv.style.display = 'block';
         }
 
-        // Initialize with user's typical settings
+        // Initialize with typical active lifestyle settings
         document.addEventListener('DOMContentLoaded', function() {
-            // Set defaults for the user's profile (7-14k steps + moderate workouts)
+            // Set defaults for active lifestyle (7-14k steps)
             document.getElementById('dailySteps').value = '1.15';
-            document.getElementById('workoutIntensity').value = '0.05';
-            console.log('Renaissance Diet 2.0 Calculator loaded with RP-style step assessment!');
+            console.log('Advanced Macro Calculator loaded successfully!');
         });
     </script>
 </body>
