@@ -1,0 +1,16 @@
+{
+  "tasks": [
+    {
+      "name": "weeklyAverage util",
+      "file": "js/weeklyAverage.js",
+      "prompt": "Create js/weeklyAverage.js with a pure ES module:\nexport function weeklyAverage(weights){ if(!weights.length) return 0; const s=weights.reduce((a,b)=>a+b,0); return Math.round((s/weights.length)*10)/10; }",
+      "tests": "node -e \"import('./js/weeklyAverage.js').then(m=>{const w=[200,199,201,200,200,199,200];if(m.weeklyAverage(w)!==199.9)process.exit(1);});\""
+    },
+    {
+      "name": "weightLog helper",
+      "file": "js/weightLog.js",
+      "prompt": "Create js/weightLog.js with addWeight(dateISO,lbs) + getWeekAverage(weekStartISO) using localStorage key 'weights'. addWeight pushes {d,l}. getWeekAverage averages entries Mon-Sun (same YYYY-WW).",
+      "tests": "node -e \"globalThis.localStorage={_:{},setItem(k,v){this._[k]=v},getItem(k){return this._[k]}};import('./js/weightLog.js').then(m=>{m.addWeight('2025-05-26',200);m.addWeight('2025-05-27',199);if(Math.round(m.getWeekAverage('2025-05-26'))!==200)process.exit(1);});\""
+    }
+  ]
+}
