@@ -224,6 +224,23 @@
             border-radius: 8px;
         }
 
+        .macro-grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+            gap:1rem;
+            margin:1rem 0;
+        }
+        .macro-card {
+            background:#fff;
+            border-radius:8px;
+            padding:0.75rem;
+            text-align:center;
+            box-shadow:0 2px 6px rgba(0,0,0,.1);
+        }
+        .macro-card span { font-size:0.8em;color:#666; }
+        .macro-card strong { font-size:1.4em;color:#667eea; }
+        .guidance-list { margin:0.5rem 0 0 1rem; }
+
         small {
             color: #7f8c8d;
             font-style: italic;
