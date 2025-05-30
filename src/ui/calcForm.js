@@ -39,7 +39,7 @@ if (form && output) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const data   = Object.fromEntries(new FormData(form).entries());
+    const data = Object.fromEntries(new FormData(form).entries());
     const params = {
       weight:    +data.weight,
       gender:     data.gender,
