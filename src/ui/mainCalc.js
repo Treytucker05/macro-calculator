@@ -1,17 +1,26 @@
 /* src/ui/mainCalc.js — connects the large “Macro Calculator” form to rd2_core */
 import { getMacros } from '../core/rd2_core.js';
+import { validateMacros } from '../js/validateMacros.js';
 
 function init() {
   const calcBtn = document.querySelector('#basicCalculator .calculate-btn');
-  const output = document.getElementById('basicResults');
+  const output  = document.getElementById('basicResults');
 
   /**
    * Render calculation outcome into #basicResults
    * @param {ReturnType<typeof getMacros>} r
    * @param {number} meals
+   * @param {number} bodyWeight
    */
-  function renderResults(r, meals) {
+  function renderResults(r, meals, bodyWeight) {
     const { calories, protein, fats, carbs, perMeal, messages } = r;
+
+    // extra protein/fat checks
+    const extraWarn = validateMacros({ p: protein, c: carbs, f: fats }, bodyWeight);
+    const allMessages = [
+      ...messages,
+      ...extraWarn.map(t => ({ text: t, level: 'warn' }))
+    ];
 
     output.innerHTML = `
       <div class="macro-grid">
@@ -26,7 +35,7 @@ function init() {
 
       <h4>Guidance</h4>
       <ul class="guidance-list">
-        ${messages.map(m => `<li>${m.text}</li>`).join('')}
+        ${allMessages.map(m => `<li>${m.text}</li>`).join('')}
       </ul>
     `;
   }
@@ -39,14 +48,14 @@ function init() {
     const params = {
       weight:    +document.getElementById('weight').value,
       gender:     document.getElementById('gender').value,
-      intensity:  document.getElementById('activity').value, // v2 day-type selector
+      intensity:  document.getElementById('activity').value,
       goal:       document.getElementById('goal').value,
       meals:     +document.getElementById('meals').value || 4
     };
 
     try {
       const res = getMacros(params);
-      renderResults(res, params.meals);
+      renderResults(res, params.meals, params.weight);
     } catch (err) {
       output.style.color = 'red';
       output.textContent = err.message;
