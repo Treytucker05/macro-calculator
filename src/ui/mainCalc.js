@@ -2,9 +2,7 @@
 import { getMacros } from '../core/rd2_core.js';
 
 function init() {
-  const calcBtn = document.querySelector(
-    '#macroCalculator button[type="submit"], #macroCalculator button'
-  );
+  const calcBtn = document.querySelector('#basicCalculator .calculate-btn');
   const output = document.getElementById('basicResults');
 
   /**
