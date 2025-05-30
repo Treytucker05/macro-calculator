@@ -26,11 +26,11 @@ function init() {
     };
   }
 
-  /** render results into the #basicResults div */
+  /** render results into #basicResults */
   function renderResults(res, meals, bw) {
     const { calories, protein, fats, carbs, perMeal, messages } = res;
 
-    // extra warnings for low protein / fat via validateMacros
+    // extra warnings for low protein / fat
     const warn = validateMacros({ p: protein, c: carbs, f: fats }, bw)
                    .map(t => ({ text: t, level: 'warn' }));
     const allMessages = [...messages, ...warn];
@@ -43,8 +43,8 @@ function init() {
         <div class="macro-card"><span>Carbs&nbsp;(g)</span><strong>${carbs}</strong></div>
       </div>
 
-      <h4>Per-Meal&nbsp;(~${meals})</h4>
-      <p>${perMeal.protein} g&nbsp;P&nbsp;•&nbsp;${perMeal.fats} g&nbsp;F&nbsp;•&nbsp;${perMeal.carbs} g&nbsp;C</p>
+      <h4>Per-Meal (~${meals})</h4>
+      <p>${perMeal.protein} g&nbsp;P • ${perMeal.fats} g&nbsp;F • ${perMeal.carbs} g&nbsp;C</p>
 
       <h4>Guidance</h4>
       <ul class="guidance-list">
@@ -65,8 +65,8 @@ function init() {
     }
   }
 
-  // trigger update on any input/change
-  [weightInp, mealsInp].forEach(el => el.addEventListener('input',  update));
+  // live updates on any change
+  [weightInp, mealsInp].forEach(el => el.addEventListener('input', update));
   [genderSel, actSel, goalSel].forEach(el => el.addEventListener('change', update));
 
   update(); // initial render
