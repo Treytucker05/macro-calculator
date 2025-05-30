@@ -31,3 +31,8 @@ export function getWeekAverage(weekStartISO) {
   const sum = weekEntries.reduce((s, e) => s + e.l, 0);
   return sum / weekEntries.length;
 }
+
+export function getLast7() {
+  const arr = readWeights().slice().sort((a, b) => a.d.localeCompare(b.d));
+  return arr.slice(-7).map(e => e.l);
+}
