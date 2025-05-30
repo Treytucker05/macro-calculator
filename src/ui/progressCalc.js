@@ -1,4 +1,4 @@
-import { weeklyAverage } from '../js/weeklyAverage.js';
+import { weeklyAverage } from '../../js/weeklyAverage.js';
 import { getLastWeekWeights } from './weightLogUI.js';
 
 function init() {

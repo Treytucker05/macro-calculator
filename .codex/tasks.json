@@ -11,21 +11,18 @@
       "file": "js/weightLog.js",
       "prompt": "Create js/weightLog.js with addWeight(dateISO,lbs) + getWeekAverage(weekStartISO) using localStorage key 'weights'. addWeight pushes {d,l}. getWeekAverage averages entries Mon-Sun (same YYYY-WW).",
       "tests": "node -e \"globalThis.localStorage={_:{},setItem(k,v){this._[k]=v},getItem(k){return this._[k]}};import('./js/weightLog.js').then(m=>{m.addWeight('2025-05-26',200);m.addWeight('2025-05-27',199);if(Math.round(m.getWeekAverage('2025-05-26'))!==200)process.exit(1);});\""
-    }
-  ]
-}
-
-,
+    },
     {
       "name": "noop",
       "file": "noop.txt",
       "prompt": "Create noop.txt that just contains the word ok",
       "tests": "echo ok"
+    },
+    {
+      "name": "validateMacros util",
+      "file": "js/validateMacros.js",
+      "prompt": "Create js/validateMacros.js with one function:\nexport function validateMacros(macros,bw){\n  /* macros={p,c,f}; bw=body-weight in lbs */\n  const errors=[];\n  if(macros.p < bw*0.8) errors.push('Protein below 0.8 g/lb');\n  if(macros.f < bw*0.3) errors.push('Fat below 0.3 g/lb');\n  return errors;\n}",
+      "tests": "node -e \"import('./js/validateMacros.js').then(m=>{const e=m.validateMacros({p:100,c:300,f:30},200);if(e.length!==2)process.exit(1);});\""
     }
-,
-{
-  "name": "validateMacros util",
-  "file": "js/validateMacros.js",
-  "prompt": "Create js/validateMacros.js with one function:\nexport function validateMacros(macros,bw){\n  /* macros={p,c,f}; bw=body-weight in lbs */\n  const errors=[];\n  if(macros.p < bw*0.8) errors.push('Protein below 0.8 g/lb');\n  if(macros.f < bw*0.3) errors.push('Fat below 0.3 g/lb');\n  return errors;\n}",
-  "tests": "node -e \"import('./js/validateMacros.js').then(m=>{const e=m.validateMacros({p:100,c:300,f:30},200);if(e.length!==2)process.exit(1);});\""
+  ]
 }
