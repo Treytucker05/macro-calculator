@@ -7,6 +7,32 @@ function init() {
   );
   const output = document.getElementById('basicResults');
 
+  /**
+   * Render calculation outcome into #basicResults
+   * @param {ReturnType<typeof getMacros>} r
+   * @param {number} meals
+   */
+  function renderResults(r, meals) {
+    const { calories, protein, fats, carbs, perMeal, messages } = r;
+
+    output.innerHTML = `
+      <div class="macro-grid">
+        <div class="macro-card"><span>Calories</span><strong>${calories}</strong></div>
+        <div class="macro-card"><span>Protein&nbsp;(g)</span><strong>${protein}</strong></div>
+        <div class="macro-card"><span>Fats&nbsp;(g)</span><strong>${fats}</strong></div>
+        <div class="macro-card"><span>Carbs&nbsp;(g)</span><strong>${carbs}</strong></div>
+      </div>
+
+      <h4>Per-Meal&nbsp;(~${meals})</h4>
+      <p>${perMeal.protein} g&nbsp;P&nbsp;&middot;&nbsp;${perMeal.fats} g&nbsp;F&nbsp;&middot;&nbsp;${perMeal.carbs} g&nbsp;C</p>
+
+      <h4>Guidance</h4>
+      <ul class="guidance-list">
+        ${messages.map(m => `<li>${m.text}</li>`).join('')}
+      </ul>
+    `;
+  }
+
   if (!calcBtn || !output) return;
 
   calcBtn.addEventListener('click', (ev) => {
@@ -22,10 +48,7 @@ function init() {
 
     try {
       const res = getMacros(params);
-      console.table(res);                    // proof-of-life
-      output.style.color   = '';
-      output.textContent   = '✓ Core engine received input (see console).';
-      // TODO: replace console.table with on-page rendering
+      renderResults(res, params.meals);
     } catch (err) {
       output.style.color = 'red';
       output.textContent = err.message;
