@@ -20,8 +20,21 @@ function init() {
 
     console.table({ avgWeight: avg, kcalAdj });
 
-    resultDiv.textContent =
-      `Avg weight = ${avg.toFixed(1)} lb → Daily kcal adjustment: ${kcalAdj > 0 ? '+' : ''}${kcalAdj} kcal (console has details)`;
+    resultDiv.innerHTML = `
+      <div class="macro-grid">
+        <div class="macro-card">
+          <span>Daily kcal adj.</span>
+          <strong>${kcalAdj > 0 ? '+' : ''}${kcalAdj}</strong>
+        </div>
+        <div class="macro-card">
+          <span>Avg body-weight (lb)</span>
+          <strong>${avg.toFixed(1)}</strong>
+        </div>
+      </div>
+      <p style="margin-top:0.5rem;">
+        Diff = ${diff.toFixed(1)} lb/week
+      </p>
+    `;
     resultDiv.style.color = '';
   });
 }
