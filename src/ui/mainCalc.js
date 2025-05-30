@@ -1,6 +1,6 @@
 /* src/ui/mainCalc.js — auto-calculates macros whenever inputs change */
 import { getMacros } from '../core/rd2_core.js';
-import { validateMacros } from '../js/validateMacros.js';
+import { validateMacros } from '../../js/validateMacros.js';
 
 function init() {
   const output    = document.getElementById('basicResults');

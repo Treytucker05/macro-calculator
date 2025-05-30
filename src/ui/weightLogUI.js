@@ -1,4 +1,4 @@
-import { addWeight, getLast7 } from '../js/weightLog.js';
+import { addWeight, getLast7 } from '../../js/weightLog.js';
 
 document.getElementById('logWeightBtn').addEventListener('click', () => {
   const w = +document.getElementById('todayWeight').value;
