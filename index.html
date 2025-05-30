@@ -243,39 +243,6 @@
     </style>
 </head>
 <body>
-    <section id="macroCalcSection">
-      <h2>Quick Macro Calculator</h2>
-
-      <form id="macroForm">
-        <label>Weight (lb): <input name="weight" type="number" required></label>
-        <label>Gender:
-          <select name="gender">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-        </label>
-        <label>Intensity:
-          <select name="intensity">
-            <option value="Non Training">Non Training</option>
-            <option value="Light">Light</option>
-            <option value="Moderate">Moderate</option>
-            <option value="Hard">Hard</option>
-          </select>
-        </label>
-        <label>Goal:
-          <select name="goal">
-            <option value="maintain">Maintain</option>
-            <option value="cut">Cut</option>
-            <option value="bulk">Bulk</option>
-          </select>
-        </label>
-        <label>Meals / day: <input name="meals" type="number" value="4" min="1"></label>
-
-        <button type="submit">Calculate</button>
-      </form>
-
-      <div id="macroResults" style="margin-top:1rem;"></div>
-    </section>
 
     <div class="container">
         <header>
@@ -481,5 +448,6 @@
     <script type="module" src="./src/app.js"></script>
     <!-- browser form handler -->
     <script type="module" src="./src/ui/calcForm.js"></script>
+    <script type="module" src="./src/ui/mainCalc.js"></script>
   </body>
 </html>
