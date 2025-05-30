@@ -1,31 +1,40 @@
+/* src/ui/mainCalc.js — connects the large “Macro Calculator” form to rd2_core */
 import { getMacros } from '../core/rd2_core.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Big form elements (already present in the v2 UI)
-  const calcBtn  = document.querySelector('#macroCalculator button[type="submit"], #macroCalculator button');
-  const output   = document.getElementById('basicResults');   // blank region in v2 UI
+function init() {
+  const calcBtn = document.querySelector(
+    '#macroCalculator button[type="submit"], #macroCalculator button'
+  );
+  const output  = document.getElementById('basicResults');
 
-  if (!calcBtn) return;   // safety
+  if (!calcBtn || !output) return;
 
-  calcBtn.addEventListener('click', ev => {
+  calcBtn.addEventListener('click', (ev) => {
     ev.preventDefault();
 
     const params = {
       weight:   +document.getElementById('weight').value,
       gender:    document.getElementById('gender').value,
-      intensity: document.getElementById('activity').value,   // v2 uses “activity” for day type
+      intensity: document.getElementById('activity').value,  // v2’s day-type selector
       goal:      document.getElementById('goal').value,
       meals:    +document.getElementById('meals').value || 4
     };
 
     try {
       const res = getMacros(params);
-      console.table(res);               // proof-of-life
-      output.textContent = '✓ Core engine received input (see console for details).';
-    } catch (e) {
-      output.textContent = e.message;
+      console.table(res);                     // proof-of-life for now
+      output.style.color = '';
+      output.textContent = '✓ Core engine received input (see console).';
+      // TODO: replace console.table with on-page rendering
+    } catch (err) {
       output.style.color = 'red';
+      output.textContent = err.message;
     }
   });
-});
+}
 
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
